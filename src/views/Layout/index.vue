@@ -1,6 +1,7 @@
 <template>
   <div>
     <LayoutNav />
+    <LayoutFixed />
     <LayoutHeader />
     <RouterView />
     <LayoutFooter />
@@ -10,4 +11,5 @@
 import LayoutNav from './components/LayoutNav.vue'
 import LayoutHeader from './components/LayoutHeader.vue'
 import LayoutFooter from './components/LayoutFooter.vue'
+import LayoutFixed from './components/LayoutFixed.vue'
 </script>
