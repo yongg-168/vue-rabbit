@@ -6,3 +6,10 @@ export const getBannerAPI = () => {
     url: '/home/banner'
   })
 }
+
+//获取新鲜好物 new
+export const findNewAPI = () => {
+  return httpInstance({
+    url: '/home/new'
+  })
+}
