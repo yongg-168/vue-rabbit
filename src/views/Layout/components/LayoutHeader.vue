@@ -1,15 +1,8 @@
 <script setup>
-import { getCategoryAPI } from '@/apis/Layout'
-import { onMounted, ref } from 'vue'
-const categotyList = ref([])
-const getCategory = async () => {
-  const res = await getCategoryAPI()
-  // console.log(res);
-  categotyList.value = res.result
-}
-onMounted(() => {
-  getCategory()
-})
+import { useCategoryStore } from '@/stores/category'
+import { storeToRefs } from 'pinia';
+//请求pinia 里面的数据
+const { categoryList } = storeToRefs(useCategoryStore())
 </script>
 
 <template>
@@ -22,7 +15,7 @@ onMounted(() => {
         <li class="home">
           <RouterLink to="/">首页</RouterLink>
         </li>
-        <li v-for="item in categotyList" :key="item.id">
+        <li v-for="item in categoryList" :key="item.id">
           <RouterLink to="/">{{ item.name }}</RouterLink>
         </li>
       </ul>
