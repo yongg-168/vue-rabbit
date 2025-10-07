@@ -1,4 +1,4 @@
-import './assets/main.css'
+// import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -9,7 +9,7 @@ import '@/styles/common.scss'
 //测试接口函数
 import { getCategory } from './apis/testApi'
 getCategory().then(res => {
-  console.log(res);
+  // console.log(res);
 })
 const app = createApp(App)
 
