@@ -1,9 +1,10 @@
 <script setup>
 import { getCategoryAPI } from '@/apis/category'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getBannerAPI } from '@/apis/home'
 import GoodsItem from '../Home/components/GoodsItem.vue'
+import { onBeforeRouteUpdate } from 'vue-router'
 const categoryData = ref({})
 const route = useRoute()
 const getCategory = async () => {
@@ -21,6 +22,15 @@ const getBanner = async () => {
 onMounted(() => {
   getBanner()
 })
+// 解决路由缓存的问题
+watch(() => route.params.id, () => {
+  getCategory()
+})
+/* onBeforeRouteUpdate((to) => {
+  console.log(to)
+  //存在问题：使用最新的路由参数请求最新的分类数据
+  getCategory(to.params.id)
+}) */
 </script>
 
 <template>
