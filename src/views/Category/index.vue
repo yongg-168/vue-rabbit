@@ -1,31 +1,11 @@
 <script setup>
-import { getCategoryAPI } from '@/apis/category'
-import { onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import { getBannerAPI } from '@/apis/home'
 import GoodsItem from '../Home/components/GoodsItem.vue'
-import { onBeforeRouteUpdate } from 'vue-router'
-const categoryData = ref({})
-const route = useRoute()
-const getCategory = async () => {
-  const res = await getCategoryAPI(route.params.id)
-  categoryData.value = res.result
-}
-onMounted(() => { getCategory() })
-
+import { useBanner } from './composables/useBanner'
+import { useCategory } from './composables/useCategory'
+const { categoryData } = useCategory()
 //获取banner
-const bannerList = ref([])
-const getBanner = async () => {
-  const res = await getBannerAPI({ distributionSite: '2' })
-  bannerList.value = res.result
-}
-onMounted(() => {
-  getBanner()
-})
-// 解决路由缓存的问题
-watch(() => route.params.id, () => {
-  getCategory()
-})
+const { bannerList } = useBanner()
+
 /* onBeforeRouteUpdate((to) => {
   console.log(to)
   //存在问题：使用最新的路由参数请求最新的分类数据
