@@ -1,13 +1,27 @@
 <script setup>
 import { getDetailHotAPI } from '@/apis/detail'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
+// 设计props 适配不同title和数据
+const props = defineProps({
+  hotType: {
+    type: Number
+  }
+})
+//适配title 1 - 24小时热榜  2-周热榜
+const TYPEMAP = {
+  1: '24小时热榜',
+  2: '周热榜'
+}
+const title = computed(() => TYPEMAP[props.hotType])
+//1.封装接口
+//2.调用接口渲染模板
 const hotList = ref([])
 const route = useRoute()
 const getHotList = async () => {
   const res = await getDetailHotAPI({
     id: route.params.id,
-    type: 1
+    type: props.hotType
   })
   hotList.value = res.result
 }
@@ -19,7 +33,7 @@ onMounted(() => {
 
 <template>
   <div class="goods-hot">
-    <h3>日榜</h3>
+    <h3>{{ title }}</h3>
     <!-- 商品区块 -->
     <RouterLink to="/" class="goods-item" v-for="item in hotList" :key="item.id">
       <img :src="item.picture" alt="" />
