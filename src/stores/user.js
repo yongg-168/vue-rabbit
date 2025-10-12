@@ -11,10 +11,15 @@ export const useUserStore = defineStore('user', () => {
     userInfo.value = res.result
   }
 
+  //退出登录时，清除pinia数据
+  const clearUserInfo = () => {
+    userInfo.value = {}
+  }
   //3.以对象的形式把state和action返回出去
   return {
     userInfo,
-    getUserInfo
+    getUserInfo,
+    clearUserInfo
   }
 }, {
   persist: true
