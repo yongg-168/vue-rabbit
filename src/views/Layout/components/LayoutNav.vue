@@ -10,6 +10,9 @@ console.log(userStore.userInfo)
   <nav class="app-topnav">
     <div class="container">
       <ul>
+        <!-- 多模板渲染：区分登陆状态和非登陆状态 -->
+
+        <!-- 适配思路：登陆时显示第一块 非登陆时，显示第二块  是否有token -->
         <template v-if="userStore.userInfo.token">
           <li><a href="javascript:;"><i class=" iconfont icon-user"></i>{{ userStore.userInfo.account }}</a></li>
           <li>
