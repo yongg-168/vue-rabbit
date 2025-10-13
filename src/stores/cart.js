@@ -1,5 +1,5 @@
 //管理购物车相关的数据
-import { ref } from "vue"
+import { computed, ref } from "vue"
 import { defineStore } from "pinia"
 export const useCartStore = defineStore('cart', () => {
   //state 数据
@@ -25,8 +25,14 @@ export const useCartStore = defineStore('cart', () => {
     //2.用filter过滤数组
     cartList.value = cartList.value.filter(i => i.skuId !== skuId)
   }
+
+  //getter 计算属性
+  const allCount = computed(() => cartList.value.reduce((acc, cur) => acc + cur.count, 0))
+  const allPrice = computed(() => cartList.value.reduce((acc, cur) => acc + cur.count * cur.price, 0))
   return {
     cartList,
+    allCount,
+    allPrice,
     addCart,
     deleteCart
   }
