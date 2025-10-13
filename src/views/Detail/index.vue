@@ -32,7 +32,7 @@ const countChange = (count) => {
 
 //加入购物车
 const addCart = () => {
-  console.log(SkuObj)
+  // console.log(SkuObj)
   if (SkuObj.skuId) {
     //规则已经选择，触发action
     cartStore.addCart({

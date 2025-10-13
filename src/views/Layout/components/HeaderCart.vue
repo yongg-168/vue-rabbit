@@ -1,8 +1,13 @@
 <script setup>
 import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const cartStore = useCartStore()
 const { cartList } = storeToRefs(cartStore)
+const toCartList = () => {
+  router.push('/CartList')
+}
 </script>
 
 <template>
@@ -34,7 +39,7 @@ const { cartList } = storeToRefs(cartStore)
           <p>共 {{ cartStore.allCount }} 件商品</p>
           <p>&yen; {{ cartStore.allPrice.toFixed(2) }} </p>
         </div>
-        <el-button size="large" type="primary">去购物车结算</el-button>
+        <el-button size="large" type="primary" @click="toCartList">去购物车结算</el-button>
       </div>
     </div>
   </div>
