@@ -1,7 +1,8 @@
 <script setup>
 import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
-const { cartList } = storeToRefs(useCartStore())
+const cartStore = useCartStore()
+const { cartList } = storeToRefs(cartStore)
 </script>
 
 <template>
@@ -25,7 +26,7 @@ const { cartList } = storeToRefs(useCartStore())
               <p class="count">x{{ i.count }}</p>
             </div>
           </RouterLink>
-          <i class="iconfont icon-close-new" @click="store.delCart(i.skuId)"></i>
+          <i class="iconfont icon-close-new" @click="cartStore.deleteCart(i.skuId)"></i>
         </div>
       </div>
       <div class="foot">
