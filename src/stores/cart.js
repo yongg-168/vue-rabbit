@@ -10,6 +10,7 @@ export const useCartStore = defineStore('cart', () => {
     //已添加，count加
     const item = cartList.value.find((item) => item.skuId === goods.skuId)
     if (item) {
+      //对象是引用数据类型，修改item，cartList的数据也会发生改变
       item.count += goods.count
     } else {
       //未添加，直接push
