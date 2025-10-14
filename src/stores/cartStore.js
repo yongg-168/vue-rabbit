@@ -2,7 +2,7 @@
 import { computed, ref } from "vue"
 import { defineStore } from "pinia"
 import { useUserStore } from "./user"
-import { findNewCartListAPI, insertCartAPI, deleteCartAPI } from "@/apis/cart"
+import { findNewCartListAPI, insertCartAPI, deleteCartAPI, mergeCartAPI } from "@/apis/cart"
 
 export const useCartStore = defineStore('cart', () => {
   const userStore = useUserStore()
@@ -53,7 +53,16 @@ export const useCartStore = defineStore('cart', () => {
       cartList.value = cartList.value.filter(i => i.skuId !== skuId)
     }
   }
-
+  //合并购物车
+  const mergeCart = async () => {
+    await mergeCartAPI(cartList.value.map(item => {
+      return {
+        skuId: item.skuId,
+        selected: item.selected,
+        count: item.count
+      }
+    }))
+  }
   //单选功能：
   const singleCheck = (skuId, selected) => {
     //通过skuid找到要修改的哪一项，然后把他的selected值给cartList
@@ -88,7 +97,8 @@ export const useCartStore = defineStore('cart', () => {
     deleteCart,
     singleCheck,
     allCheck,
-    updateNewList
+    updateNewList,
+    mergeCart
   }
 }, {
   persist: true

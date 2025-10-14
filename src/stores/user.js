@@ -11,6 +11,8 @@ export const useUserStore = defineStore('user', () => {
   const getUserInfo = async ({ account, password }) => {
     const res = await loginAPI({ account, password })
     userInfo.value = res.result
+    //合并购物车
+    cartStore.mergeCart()
     //登陆时，获取购物车信息
     cartStore.updateNewList()
   }
