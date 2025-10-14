@@ -1,5 +1,5 @@
 <script setup>
-import { useCartStore } from '@/stores/cart'
+import { useCartStore } from '@/stores/cartStore'
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -67,7 +67,8 @@ const allCheck = (selected) => {
               </td>
               <td class="tc">
                 <p>
-                  <el-popconfirm title="确认删除吗?" confirm-button-text="确认" cancel-button-text="取消" @confirm="delCart(i)">
+                  <el-popconfirm title="确认删除吗?" confirm-button-text="确认" cancel-button-text="取消"
+                    @confirm="cartStore.deleteCart(i.skuId)">
                     <template #reference>
                       <a href="javascript:;">删除</a>
                     </template>

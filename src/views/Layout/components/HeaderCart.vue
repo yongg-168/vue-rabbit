@@ -1,5 +1,5 @@
 <script setup>
-import { useCartStore } from '@/stores/cart'
+import { useCartStore } from '@/stores/cartStore'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 const router = useRouter()
