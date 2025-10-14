@@ -3,7 +3,7 @@ import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
 const cartStore = useCartStore()
-const { cartList } = storeToRefs(cartStore)
+const { cartList, isAll } = storeToRefs(cartStore)
 onMounted(() => {
   console.log(cartList)
 })
@@ -13,6 +13,12 @@ const singleCheck = (i, selected) => {
   //store cartList 数组无法知道要修改谁的选中状态
   //除了selected，添加一个skuId用来筛选的参数
   cartStore.singleCheck(i.skuId, selected)
+}
+
+//全选回调
+const allCheck = (selected) => {
+  //全选框切换时，把store里面的所有项单选框都修改为当前复选框状态
+  cartStore.allCheck(selected)
 }
 </script>
 
@@ -24,7 +30,7 @@ const singleCheck = (i, selected) => {
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox />
+                <el-checkbox :model-value="isAll" @change="allCheck" />
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
@@ -37,7 +43,7 @@ const singleCheck = (i, selected) => {
           <tbody>
             <tr v-for="i in cartList" :key="i.id">
               <td>
-                <el-checkbox :modelValue="i.selected" @change="(selected) => singleCheck(i, selected)" />
+                <el-checkbox :model-value="i.selected" @change="(selected) => singleCheck(i, selected)" />
               </td>
               <td>
                 <div class="goods">

@@ -32,16 +32,26 @@ export const useCartStore = defineStore('cart', () => {
     const item = cartList.value.find((item) => item.skuId === skuId)
     item.selected = selected
   }
+
+  //全选功能
+  const allCheck = (selected) => {
+    cartList.value.forEach((item) => item.selected = selected)
+  }
   //getter 计算属性
   const allCount = computed(() => cartList.value.reduce((acc, cur) => acc + cur.count, 0))
   const allPrice = computed(() => cartList.value.reduce((acc, cur) => acc + cur.count * cur.price, 0))
+
+  //是否全选  当所有单选框都是选中状态时，全选矿选中
+  const isAll = computed(() => cartList.value.every(item => item.selected))
   return {
     cartList,
     allCount,
     allPrice,
+    isAll,
     addCart,
     deleteCart,
-    singleCheck
+    singleCheck,
+    allCheck
   }
 }, {
   persist: true
