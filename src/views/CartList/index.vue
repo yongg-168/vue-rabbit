@@ -7,6 +7,13 @@ const { cartList } = storeToRefs(cartStore)
 onMounted(() => {
   console.log(cartList)
 })
+//单选回调
+const singleCheck = (i, selected) => {
+  // console.log(selected, i)
+  //store cartList 数组无法知道要修改谁的选中状态
+  //除了selected，添加一个skuId用来筛选的参数
+  cartStore.singleCheck(i.skuId, selected)
+}
 </script>
 
 <template>
@@ -30,7 +37,7 @@ onMounted(() => {
           <tbody>
             <tr v-for="i in cartList" :key="i.id">
               <td>
-                <el-checkbox />
+                <el-checkbox :modelValue="i.selected" @change="(selected) => singleCheck(i, selected)" />
               </td>
               <td>
                 <div class="goods">
