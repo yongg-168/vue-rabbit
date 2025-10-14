@@ -2,11 +2,12 @@
 import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
+const router = useRouter()
 const cartStore = useCartStore()
-const { cartList, isAll } = storeToRefs(cartStore)
-onMounted(() => {
-  console.log(cartList)
-})
+const { cartList, isAll, selectedCount, selectedPrice, allCount } = storeToRefs(cartStore)
 //单选回调
 const singleCheck = (i, selected) => {
   // console.log(selected, i)
@@ -90,11 +91,12 @@ const allCheck = (selected) => {
       <!-- 操作栏 -->
       <div class="action">
         <div class="batch">
-          共 10 件商品，已选择 2 件，商品合计：
-          <span class="red">¥ {{ cartStore.allPrice }} </span>
+          共 {{ allCount }} 件商品，已选择 {{ selectedCount }} 件，商品合计：
+          <span class="red">¥ {{ selectedPrice.toFixed(2) }} </span>
         </div>
         <div class="total">
-          <el-button size="large" type="primary">下单结算</el-button>
+          <el-button size="large" type="primary"
+            @click="userStore.userInfo.token ? router.push('/') : router.push('/Login')">下单结算</el-button>
         </div>
       </div>
     </div>

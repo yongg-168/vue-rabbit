@@ -1,22 +1,36 @@
 //管理购物车相关的数据
 import { computed, ref } from "vue"
 import { defineStore } from "pinia"
+import { useUserStore } from "./user"
+import { findNewCartListAPI, insertCartAPI } from "@/apis/cart"
+
 export const useCartStore = defineStore('cart', () => {
+  const userStore = useUserStore()
+  const isToken = computed(() => userStore.userInfo.token)
+
   //state 数据
   const cartList = ref([])
   //action 
-  const addCart = (goods) => {
-    //添加购物车操作
-    //已添加，count加
-    const item = cartList.value.find((item) => item.skuId === goods.skuId)
-    if (item) {
-      //对象是引用数据类型，修改item，cartList的数据也会发生改变
-      item.count += goods.count
+  const addCart = async (goods) => {
+    const { skuId, count } = goods
+    if (isToken.value) {
+      await insertCartAPI({ skuId, count })
+      const res = await findNewCartListAPI()
+      cartList.value = res.result
     } else {
-      //未添加，直接push
-      cartList.value.push(goods)
+      //添加购物车操作
+      //已添加，count加
+      const item = cartList.value.find((item) => item.skuId === goods.skuId)
+      if (item) {
+        //对象是引用数据类型，修改item，cartList的数据也会发生改变
+        item.count += goods.count
+      } else {
+        //未添加，直接push
+        cartList.value.push(goods)
+      }
     }
   }
+
   //删除购物车
   const deleteCart = (skuId) => {
     //1.用splice获取下标删除
@@ -38,9 +52,14 @@ export const useCartStore = defineStore('cart', () => {
     cartList.value.forEach((item) => item.selected = selected)
   }
   //getter 计算属性
+  //1.总的数量 count之和
   const allCount = computed(() => cartList.value.reduce((acc, cur) => acc + cur.count, 0))
+  //2.总的价钱 price之和
   const allPrice = computed(() => cartList.value.reduce((acc, cur) => acc + cur.count * cur.price, 0))
-
+  //3.已选择数量
+  const selectedCount = computed(() => cartList.value.filter(item => item.selected).reduce((acc, cur) => acc + cur.count, 0))
+  //4.已选择价钱之和
+  const selectedPrice = computed(() => cartList.value.filter(item => item.selected).reduce((acc, cur) => acc + cur.count * cur.price, 0))
   //是否全选  当所有单选框都是选中状态时，全选矿选中
   const isAll = computed(() => cartList.value.every(item => item.selected))
   return {
@@ -48,6 +67,8 @@ export const useCartStore = defineStore('cart', () => {
     allCount,
     allPrice,
     isAll,
+    selectedCount,
+    selectedPrice,
     addCart,
     deleteCart,
     singleCheck,
